@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiShortsAuto</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#0b1020;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    padding:20px;
+    text-align:center;
+    border-bottom:1px solid #252c45;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#7c5cff;
+}
+
+.container{
+    width:92%;
+    max-width:650px;
+    margin:25px auto;
+}
+
+.card{
+    background:#151b2e;
+    border:1px solid #272f49;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+}
+
+h2{
+    font-size:19px;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin:12px 0 7px;
+    color:#b8bfd4;
+    font-size:14px;
+}
+
+select,input{
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #353d59;
+    background:#0d1324;
+    color:#fff;
+    outline:none;
+}
+
+.platforms{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.platform{
+    padding:14px 5px;
+    text-align:center;
+    border:1px solid #353d59;
+    border-radius:12px;
+    cursor:pointer;
+    background:#0d1324;
+}
+
+.platform.active{
+    border-color:#7c5cff;
+    background:#211b45;
+}
+
+.times{
+    margin-top:15px;
+}
+
+.time-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.time-row span{
+    width:70px;
+    color:#b8bfd4;
+}
+
+.automatic{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#0d1324;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+}
+
+.switch{
+    width:50px;
+    height:28px;
+    background:#343b55;
+    border-radius:20px;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch::after{
+    content:"";
+    width:22px;
+    height:22px;
+    background:#fff;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:4px;
+    transition:.2s;
+}
+
+.switch.on{
+    background:#7c5cff;
+}
+
+.switch.on::after{
+    left:24px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    background:#7c5cff;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.status{
+    display:none;
+}
+
+.status-item{
+    padding:12px;
+    background:#0d1324;
+    border-radius:10px;
+    margin:8px 0;
+}
+
+.small{
+    color:#9fa7bf;
+    font-size:13px;
+    margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Ai<span>Shorts</span>Auto 🤖</div>
+    <div class="small">AI-Powered Social Video Automation</div>
+</header>
+
+<div class="container">
+
+<!-- PLATFORM -->
+<div class="card">
+<h2>1️⃣ Choose Platform</h2>
+
+<div class="platforms">
+    <div class="platform" onclick="togglePlatform(this)">▶️ YouTube</div>
+    <div class="platform" onclick="togglePlatform(this)">📘 Facebook</div>
+    <div class="platform" onclick="togglePlatform(this)">📸 Instagram</div>
+</div>
+</div>
+
+<!-- CATEGORY -->
+<div class="card">
+<h2>2️⃣ Choose Category</h2>
+
+<label>Video Category</label>
+<select id="category">
+    <option>Education</option>
+    <option>Gaming</option>
+    <option>Facts</option>
+    <option>Motivation</option>
+    <option>Technology</option>
+    <option>Entertainment</option>
+    <option>Devotional</option>
+    <option>Food</option>
+</select>
+
+<label>Video Style</label>
+<select id="style">
+    <option>Fast Paced</option>
+    <option>Cinematic</option>
+    <option>Educational</option>
+    <option>Storytelling</option>
+    <option>Funny</option>
+</select>
+</div>
+
+<!-- DAILY VIDEOS -->
+<div class="card">
+<h2>3️⃣ Daily Shorts</h2>
+
+<label>How many Shorts today?</label>
+
+<select id="count" onchange="createTimes()">
+    <option value="1">1 Short</option>
+    <option value="2">2 Shorts</option>
+    <option value="3">3 Shorts</option>
+    <option value="4">4 Shorts</option>
+    <option value="5">5 Shorts</option>
+    <option value="6">6 Shorts</option>
+    <option value="7">7 Shorts</option>
+    <option value="8">8 Shorts</option>
+    <option value="9">9 Shorts</option>
+    <option value="10">10 Shorts</option>
+</select>
+
+<div id="times" class="times"></div>
+</div>
+
+<!-- AUTO -->
+<div class="card">
+
+<h2>4️⃣ Automation</h2>
+
+<div class="automatic">
+
+<div>
+<strong>All-Time Automatic</strong>
+<div class="small">
+Repeat this schedule every day
+</div>
+</div>
+
+<div class="switch" id="autoSwitch" onclick="toggleAuto()"></div>
+
+</div>
+
+</div>
+
+<!-- START -->
+<div class="card">
+<button onclick="startAutomation()">🚀 READY TO START</button>
+</div>
+
+<!-- STATUS -->
+<div class="card status" id="status">
+
+<h2>📊 System Status</h2>
+
+<div class="status-item">
+🔍 Trend Research
+<div class="small">Waiting to start...</div>
+</div>
+
+<div class="status-item">
+✍️ AI Script
+<div class="small">Waiting...</div>
+</div>
+
+<div class="status-item">
+🎬 Video Generation
+<div class="small">Waiting...</div>
+</div>
+
+<div class="status-item">
+📤 Upload
+<div class="small">Waiting...</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let auto=false;
+
+function togglePlatform(el){
+    el.classList.toggle("active");
+}
+
+function toggleAuto(){
+    auto=!auto;
+    document.getElementById("autoSwitch")
+        .classList.toggle("on",auto);
+}
+
+function createTimes(){
+
+    const count=parseInt(
+        document.getElementById("count").value
+    );
+
+    const box=document.getElementById("times");
+
+    box.innerHTML="";
+
+    for(let i=1;i<=count;i++){
+
+        box.innerHTML+=`
+        <div class="time-row">
+            <span>Video ${i}</span>
+            <input type="time"
+                   class="scheduleTime"
+                   onchange="validateTimes()">
+        </div>`;
+    }
+}
+
+function minutes(time){
+
+    const [h,m]=time.split(":").map(Number);
+
+    return h*60+m;
+}
+
+function validateTimes(){
+
+    const inputs=[
+        ...document.querySelectorAll(".scheduleTime")
+    ];
+
+    for(let i=1;i<inputs.length;i++){
+
+        if(!inputs[i].value || !inputs[i-1].value)
+            continue;
+
+        const previous=minutes(inputs[i-1].value);
+        const current=minutes(inputs[i].value);
+
+        if(current-previous<120){
+
+            alert(
+                "⚠️ Minimum 2-hour gap required between videos."
+            );
+
+            inputs[i].value="";
+        }
+    }
+}
+
+function startAutomation(){
+
+    const platforms=[
+        ...document.querySelectorAll(".platform.active")
+    ];
+
+    if(platforms.length===0){
+        alert("Please choose at least one platform.");
+        return;
+    }
+
+    const times=[
+        ...document.querySelectorAll(".scheduleTime")
+    ];
+
+    for(let t of times){
+
+        if(!t.value){
+            alert("Please set a time for every video.");
+            return;
+        }
+    }
+
+    document.getElementById("status").style.display="block";
+
+    alert(
+        "🚀 Setup complete!\\n\\n" +
+        "Automation system is ready."
+    );
+
+}
+
+createTimes();
+
+</script>
+
+</body>
+  </html>
