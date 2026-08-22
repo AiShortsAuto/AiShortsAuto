@@ -20,14 +20,14 @@ body{
 }
 
 header{
-    padding:22px 18px;
+    padding:24px 18px;
     text-align:center;
-    border-bottom:1px solid #242a40;
     background:#0d1120;
+    border-bottom:1px solid #242a40;
 }
 
 .logo{
-    font-size:28px;
+    font-size:29px;
     font-weight:800;
 }
 
@@ -60,7 +60,7 @@ header{
     color:#8b72ff;
     font-size:12px;
     font-weight:bold;
-    margin-bottom:6px;
+    margin-bottom:7px;
 }
 
 h2{
@@ -91,6 +91,47 @@ input:focus{
     border-color:#7657ff;
 }
 
+/* SOCIAL */
+
+.social-box{
+    background:#0b1020;
+    border:1px solid #292f48;
+    border-radius:14px;
+    padding:15px;
+    margin-top:11px;
+}
+
+.social-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.social-name{
+    font-weight:bold;
+}
+
+.connect-btn{
+    border:1px solid #7657ff;
+    background:#1b1740;
+    color:#fff;
+    padding:9px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.connected{
+    color:#4cdb8b;
+    font-size:12px;
+    margin-top:7px;
+    display:none;
+}
+
+/* PLATFORMS */
+
 .platforms{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -111,15 +152,9 @@ input:focus{
 .platform.active{
     border-color:#7657ff;
     background:#211b45;
-    transform:translateY(-1px);
 }
 
-.info{
-    color:#929ab1;
-    font-size:12px;
-    margin-top:8px;
-    line-height:1.5;
-}
+/* SCHEDULE */
 
 .video-row{
     border:1px solid #2b334d;
@@ -155,6 +190,15 @@ input:focus{
     color:#ff6878;
 }
 
+.info{
+    color:#929ab1;
+    font-size:12px;
+    margin-top:8px;
+    line-height:1.5;
+}
+
+/* AUTOMATION */
+
 .automatic{
     display:flex;
     align-items:center;
@@ -163,7 +207,6 @@ input:focus{
     padding:15px;
     border-radius:13px;
     background:#0b1020;
-    margin-top:15px;
 }
 
 .switch{
@@ -196,9 +239,11 @@ input:focus{
     left:25px;
 }
 
+/* BUTTON */
+
 .primary{
     width:100%;
-    padding:15px;
+    padding:16px;
     border:0;
     border-radius:13px;
     background:linear-gradient(135deg,#7657ff,#9b63ff);
@@ -211,6 +256,8 @@ input:focus{
 .primary:active{
     transform:scale(.98);
 }
+
+/* STATUS */
 
 .status{
     display:none;
@@ -238,6 +285,7 @@ input:focus{
 }
 
 @media(max-width:430px){
+
     .platforms{
         grid-template-columns:1fr;
     }
@@ -245,6 +293,7 @@ input:focus{
     .card{
         padding:17px;
     }
+
 }
 </style>
 </head>
@@ -260,40 +309,106 @@ input:focus{
 
 <div class="container">
 
-<!-- PLATFORM -->
+<!-- STEP 1 -->
+
 <div class="card">
 
 <div class="step">STEP 1</div>
-<h2>Choose Platform</h2>
+<h2>🔗 Connect Your Platforms</h2>
 
-<div class="platforms">
+<!-- YOUTUBE -->
 
-<div class="platform" onclick="togglePlatform(this)">
-▶️ YouTube
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">▶️ YouTube</div>
+<button class="connect-btn"
+onclick="connectPlatform('youtube')">
+Connect
+</button>
 </div>
 
-<div class="platform" onclick="togglePlatform(this)">
-📘 Facebook
+<label>YouTube Channel Link</label>
+
+<input
+id="youtubeLink"
+type="url"
+placeholder="https://youtube.com/@yourchannel">
+
+<div id="youtubeConnected"
+class="connected">
+🟢 Channel link added
 </div>
 
-<div class="platform" onclick="togglePlatform(this)">
-📸 Instagram
+</div>
+
+
+<!-- FACEBOOK -->
+
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">📘 Facebook</div>
+<button class="connect-btn"
+onclick="connectPlatform('facebook')">
+Connect
+</button>
+</div>
+
+<label>Facebook Page Link</label>
+
+<input
+id="facebookLink"
+type="url"
+placeholder="https://facebook.com/yourpage">
+
+<div id="facebookConnected"
+class="connected">
+🟢 Page link added
+</div>
+
+</div>
+
+
+<!-- INSTAGRAM -->
+
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">📸 Instagram</div>
+<button class="connect-btn"
+onclick="connectPlatform('instagram')">
+Connect
+</button>
+</div>
+
+<label>Instagram Profile Link</label>
+
+<input
+id="instagramLink"
+type="url"
+placeholder="https://instagram.com/yourprofile">
+
+<div id="instagramConnected"
+class="connected">
+🟢 Profile link added
 </div>
 
 </div>
 
 <div class="info">
-Select one or more platforms for automatic publishing.
+Actual account authorization will be added later using official platform OAuth.
 </div>
 
 </div>
 
 
-<!-- CATEGORY -->
+<!-- STEP 2 -->
+
 <div class="card">
 
 <div class="step">STEP 2</div>
-<h2>Choose Category</h2>
+<h2>📂 Choose Category</h2>
 
 <label>YouTube Category</label>
 
@@ -335,13 +450,14 @@ Select one or more platforms for automatic publishing.
 </div>
 
 
-<!-- SHORTS -->
+<!-- STEP 3 -->
+
 <div class="card">
 
 <div class="step">STEP 3</div>
-<h2>Daily Shorts</h2>
+<h2>🎬 Daily Shorts</h2>
 
-<label>How many Shorts do you want to upload?</label>
+<label>Number of Shorts</label>
 
 <select id="count" onchange="createSchedule()">
 
@@ -358,6 +474,7 @@ Select one or more platforms for automatic publishing.
 
 </select>
 
+
 <label>Minimum Gap Between Shorts</label>
 
 <select id="gap" onchange="validateAll()">
@@ -373,8 +490,8 @@ Select one or more platforms for automatic publishing.
 </select>
 
 <div class="info">
-You can choose any upload time, but two consecutive Shorts
-must respect your selected minimum gap.
+Choose your own upload time for every Short.
+The system will check your selected minimum gap.
 </div>
 
 <div id="schedule"></div>
@@ -382,26 +499,28 @@ must respect your selected minimum gap.
 </div>
 
 
-<!-- AUTOMATION -->
+<!-- STEP 4 -->
+
 <div class="card">
 
 <div class="step">STEP 4</div>
-<h2>Automation</h2>
+<h2>♾️ Automation</h2>
 
 <div class="automatic">
 
 <div>
+
 <strong>All-Time Automatic</strong>
 
 <div class="info">
-Repeat this exact schedule every day automatically.
+Repeat this schedule every day automatically.
 </div>
 
 </div>
 
 <div id="autoSwitch"
-     class="switch"
-     onclick="toggleAuto()">
+class="switch"
+onclick="toggleAuto()">
 </div>
 
 </div>
@@ -409,11 +528,14 @@ Repeat this exact schedule every day automatically.
 </div>
 
 
-<!-- START -->
+<!-- STEP 5 -->
+
 <div class="card">
 
+<div class="step">STEP 5</div>
+
 <button class="primary"
-        onclick="startAutomation()">
+onclick="startAutomation()">
 
 🚀 READY TO START
 
@@ -422,11 +544,19 @@ Repeat this exact schedule every day automatically.
 </div>
 
 
-<!-- STATUS -->
+<!-- SYSTEM STATUS -->
+
 <div class="card status" id="status">
 
-<div class="step">SYSTEM</div>
-<h2>📊 System Status</h2>
+<div class="step">SYSTEM STATUS</div>
+<h2>📊 Automation Status</h2>
+
+<div class="status-item">
+🔗 Platform Connection
+<div class="status-small">
+Waiting...
+</div>
+</div>
 
 <div class="status-item">
 🔍 Trend Research
@@ -472,6 +602,7 @@ Waiting...
 
 </div>
 
+
 <div class="footer">
 AiShortsAuto • AI Social Video Automation
 </div>
@@ -484,11 +615,54 @@ AiShortsAuto • AI Social Video Automation
 let automatic=false;
 
 
-/* PLATFORM */
+/* PLATFORM SELECTION */
 
 function togglePlatform(element){
 
     element.classList.toggle("active");
+
+}
+
+
+/* CONNECT LINK */
+
+function connectPlatform(platform){
+
+    let input;
+    let status;
+
+    if(platform==="youtube"){
+
+        input=document.getElementById("youtubeLink");
+        status=document.getElementById("youtubeConnected");
+
+    }
+
+    if(platform==="facebook"){
+
+        input=document.getElementById("facebookLink");
+        status=document.getElementById("facebookConnected");
+
+    }
+
+    if(platform==="instagram"){
+
+        input=document.getElementById("instagramLink");
+        status=document.getElementById("instagramConnected");
+
+    }
+
+    if(!input.value.trim()){
+
+        alert(
+            "Please paste your platform link first."
+        );
+
+        return;
+
+    }
+
+    status.style.display="block";
 
 }
 
@@ -500,13 +674,13 @@ function toggleAuto(){
     automatic=!automatic;
 
     document
-        .getElementById("autoSwitch")
-        .classList.toggle("on",automatic);
+    .getElementById("autoSwitch")
+    .classList.toggle("on",automatic);
 
 }
 
 
-/* TIME TO MINUTES */
+/* TIME */
 
 function timeToMinutes(value){
 
@@ -545,12 +719,13 @@ function createSchedule(){
             <label>Upload Time</label>
 
             <input
-                type="time"
-                class="timeInput"
-                onchange="validateAll()"
-            >
+            type="time"
+            class="timeInput"
+            onchange="validateAll()">
 
-            <div class="schedule-status"></div>
+            <div class="schedule-status">
+            ⏳ Time not selected
+            </div>
 
         </div>
 
@@ -561,7 +736,7 @@ function createSchedule(){
 }
 
 
-/* VALIDATE */
+/* VALIDATION */
 
 function validateAll(){
 
@@ -581,8 +756,10 @@ function validateAll(){
 
     for(let i=0;i<inputs.length;i++){
 
-        const status=rows[i]
-            .querySelector(".schedule-status");
+        const status=
+        rows[i].querySelector(
+            ".schedule-status"
+        );
 
         rows[i].classList.remove(
             "valid",
@@ -590,37 +767,48 @@ function validateAll(){
         );
 
         status.className=
-            "schedule-status";
+        "schedule-status";
+
 
         if(!inputs[i].value){
 
             status.innerText=
-                "⏳ Time not selected";
+            "⏳ Time not selected";
 
             status.classList.add("bad");
 
             previous=null;
 
             continue;
+
         }
 
+
         const current=
-            timeToMinutes(inputs[i].value);
+        timeToMinutes(
+            inputs[i].value
+        );
+
 
         if(previous!==null){
 
             const difference=
-                current-previous;
+            current-previous;
+
 
             if(difference<gap){
 
-                rows[i].classList.add("invalid");
+                rows[i].classList.add(
+                    "invalid"
+                );
 
                 status.innerText=
-                    "❌ Gap is too short. Minimum gap: "
-                    +formatGap(gap);
+                "❌ Minimum gap required: "+
+                formatGap(gap);
 
-                status.classList.add("bad");
+                status.classList.add(
+                    "bad"
+                );
 
                 continue;
 
@@ -628,12 +816,17 @@ function validateAll(){
 
         }
 
-        rows[i].classList.add("valid");
+
+        rows[i].classList.add(
+            "valid"
+        );
 
         status.innerText=
-            "✅ Schedule time is valid";
+        "✅ Schedule time is valid";
 
-        status.classList.add("good");
+        status.classList.add(
+            "good"
+        );
 
         previous=current;
 
@@ -649,13 +842,24 @@ function formatGap(minutes){
     if(minutes<60)
         return minutes+" minutes";
 
-    const hours=Math.floor(minutes/60);
-    const mins=minutes%60;
+    const hours=
+    Math.floor(minutes/60);
 
-    if(mins===0)
-        return hours+" hour"+(hours>1?"s":"");
+    const mins=
+    minutes%60;
 
-    return hours+"h "+mins+"m";
+    if(mins===0){
+
+        return hours+
+        " hour"+
+        (hours>1?"s":"");
+
+    }
+
+    return hours+
+    "h "+
+    mins+
+    "m";
 
 }
 
@@ -664,25 +868,27 @@ function formatGap(minutes){
 
 function startAutomation(){
 
-    const platforms=[
-        ...document.querySelectorAll(
-            ".platform.active"
-        )
+    const links=[
+        document.getElementById("youtubeLink").value.trim(),
+        document.getElementById("facebookLink").value.trim(),
+        document.getElementById("instagramLink").value.trim()
     ];
 
-    if(platforms.length===0){
+    if(!links.some(Boolean)){
 
         alert(
-            "Please select at least one platform."
+            "Please connect at least one social platform."
         );
 
         return;
+
     }
 
 
     const inputs=[
         ...document.querySelectorAll(".timeInput")
     ];
+
 
     for(let input of inputs){
 
@@ -703,14 +909,15 @@ function startAutomation(){
 
 
     const invalid=
-        document.querySelectorAll(
-            ".video-row.invalid"
-        );
+    document.querySelectorAll(
+        ".video-row.invalid"
+    );
+
 
     if(invalid.length>0){
 
         alert(
-            "⚠️ Your schedule has an invalid time gap."
+            "⚠️ Please fix the schedule gap first."
         );
 
         return;
@@ -728,7 +935,6 @@ function startAutomation(){
     );
 
 }
-
 
 createSchedule();
 
