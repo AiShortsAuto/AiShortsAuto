@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiShortsAuto</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#080b16;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    padding:24px 18px;
+    text-align:center;
+    background:#0d1120;
+    border-bottom:1px solid #242a40;
+}
+
+.logo{
+    font-size:29px;
+    font-weight:800;
+}
+
+.logo span{
+    color:#7657ff;
+}
+
+.subtitle{
+    color:#969db5;
+    font-size:13px;
+    margin-top:6px;
+}
+
+.container{
+    width:92%;
+    max-width:680px;
+    margin:22px auto;
+}
+
+.card{
+    background:#121729;
+    border:1px solid #252c45;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.step{
+    color:#8b72ff;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+h2{
+    font-size:19px;
+    margin-bottom:16px;
+}
+
+label{
+    display:block;
+    color:#aeb5ca;
+    font-size:13px;
+    margin:13px 0 7px;
+}
+
+select,
+input{
+    width:100%;
+    padding:13px;
+    border-radius:11px;
+    border:1px solid #353d59;
+    background:#0b1020;
+    color:#fff;
+    outline:none;
+}
+
+select:focus,
+input:focus{
+    border-color:#7657ff;
+}
+
+/* SOCIAL */
+
+.social-box{
+    background:#0b1020;
+    border:1px solid #292f48;
+    border-radius:14px;
+    padding:15px;
+    margin-top:11px;
+}
+
+.social-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.social-name{
+    font-weight:bold;
+}
+
+.connect-btn{
+    border:1px solid #7657ff;
+    background:#1b1740;
+    color:#fff;
+    padding:9px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.connected{
+    color:#4cdb8b;
+    font-size:12px;
+    margin-top:7px;
+    display:none;
+}
+
+/* PLATFORMS */
+
+.platforms{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.platform{
+    padding:14px 5px;
+    text-align:center;
+    border:1px solid #353d59;
+    border-radius:12px;
+    background:#0b1020;
+    cursor:pointer;
+    font-size:13px;
+    transition:.2s;
+}
+
+.platform.active{
+    border-color:#7657ff;
+    background:#211b45;
+}
+
+/* SCHEDULE */
+
+.video-row{
+    border:1px solid #2b334d;
+    background:#0b1020;
+    border-radius:14px;
+    padding:14px;
+    margin-top:12px;
+}
+
+.video-title{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.valid{
+    border-color:#287d55;
+}
+
+.invalid{
+    border-color:#a33b48;
+}
+
+.schedule-status{
+    font-size:12px;
+    margin-top:8px;
+}
+
+.good{
+    color:#52d68d;
+}
+
+.bad{
+    color:#ff6878;
+}
+
+.info{
+    color:#929ab1;
+    font-size:12px;
+    margin-top:8px;
+    line-height:1.5;
+}
+
+/* AUTOMATION */
+
+.automatic{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:15px;
+    border-radius:13px;
+    background:#0b1020;
+}
+
+.switch{
+    flex-shrink:0;
+    width:52px;
+    height:29px;
+    border-radius:20px;
+    background:#343b55;
+    position:relative;
+    cursor:pointer;
+}
+
+.switch:after{
+    content:"";
+    width:23px;
+    height:23px;
+    background:#fff;
+    border-radius:50%;
+    position:absolute;
+    top:3px;
+    left:4px;
+    transition:.2s;
+}
+
+.switch.on{
+    background:#7657ff;
+}
+
+.switch.on:after{
+    left:25px;
+}
+
+/* BUTTON */
+
+.primary{
+    width:100%;
+    padding:16px;
+    border:0;
+    border-radius:13px;
+    background:linear-gradient(135deg,#7657ff,#9b63ff);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary:active{
+    transform:scale(.98);
+}
+
+/* STATUS */
+
+.status{
+    display:none;
+}
+
+.status-item{
+    background:#0b1020;
+    border:1px solid #272f48;
+    border-radius:12px;
+    padding:13px;
+    margin-top:9px;
+}
+
+.status-small{
+    color:#969db5;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.footer{
+    text-align:center;
+    color:#6f778f;
+    font-size:12px;
+    padding:15px 0 30px;
+}
+
+@media(max-width:430px){
+
+    .platforms{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+}
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Ai<span>Shorts</span>Auto 🤖</div>
+    <div class="subtitle">
+        AI-Powered Social Video Automation
+    </div>
+    <button id="logoutBtn" class="connect-btn" type="button" style="margin-top:14px;">Logout</button>
+</header>
+
+<div class="container">
+
+<!-- STEP 1 -->
+
+<div class="card">
+
+<div class="step">STEP 1</div>
+<h2>🔗 Connect Your Platforms</h2>
+
+<!-- YOUTUBE -->
+
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">▶️ YouTube</div>
+<button class="connect-btn"
+onclick="connectPlatform('youtube')">
+Connect
+</button>
+</div>
+
+<label>YouTube Channel Link</label>
+
+<input
+id="youtubeLink"
+type="url"
+placeholder="https://youtube.com/@yourchannel">
+
+<div id="youtubeConnected"
+class="connected">
+🟢 Channel link added
+</div>
+
+</div>
+
+
+<!-- FACEBOOK -->
+
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">📘 Facebook</div>
+<button class="connect-btn"
+onclick="connectPlatform('facebook')">
+Connect
+</button>
+</div>
+
+<label>Facebook Page Link</label>
+
+<input
+id="facebookLink"
+type="url"
+placeholder="https://facebook.com/yourpage">
+
+<div id="facebookConnected"
+class="connected">
+🟢 Page link added
+</div>
+
+</div>
+
+
+<!-- INSTAGRAM -->
+
+<div class="social-box">
+
+<div class="social-top">
+<div class="social-name">📸 Instagram</div>
+<button class="connect-btn"
+onclick="connectPlatform('instagram')">
+Connect
+</button>
+</div>
+
+<label>Instagram Profile Link</label>
+
+<input
+id="instagramLink"
+type="url"
+placeholder="https://instagram.com/yourprofile">
+
+<div id="instagramConnected"
+class="connected">
+🟢 Profile link added
+</div>
+
+</div>
+
+<div class="info">
+Actual account authorization will be added later using official platform OAuth.
+</div>
+
+</div>
+
+
+<!-- STEP 2 -->
+
+<div class="card">
+
+<div class="step">STEP 2</div>
+<h2>📂 Choose Category</h2>
+
+<label>YouTube Category</label>
+
+<select id="category">
+
+<option>Film & Animation</option>
+<option>Autos & Vehicles</option>
+<option>Music</option>
+<option>Pets & Animals</option>
+<option>Sports</option>
+<option>Travel & Events</option>
+<option>Gaming</option>
+<option>People & Blogs</option>
+<option>Comedy</option>
+<option>Entertainment</option>
+<option>News & Politics</option>
+<option>Howto & Style</option>
+<option>Education</option>
+<option>Science & Technology</option>
+<option>Nonprofits & Activism</option>
+
+</select>
+
+<label>Video Style</label>
+
+<select id="style">
+
+<option>Fast Paced</option>
+<option>Cinematic</option>
+<option>Storytelling</option>
+<option>Educational</option>
+<option>Funny</option>
+<option>Documentary</option>
+<option>News Style</option>
+<option>Motivational</option>
+
+</select>
+
+</div>
+
+
+<!-- STEP 3 -->
+
+<div class="card">
+
+<div class="step">STEP 3</div>
+<h2>🎬 Daily Shorts</h2>
+
+<label>Number of Shorts</label>
+
+<select id="count" onchange="createSchedule()">
+
+<option value="1">1 Short</option>
+<option value="2">2 Shorts</option>
+<option value="3">3 Shorts</option>
+<option value="4">4 Shorts</option>
+<option value="5">5 Shorts</option>
+<option value="6">6 Shorts</option>
+<option value="7">7 Shorts</option>
+<option value="8">8 Shorts</option>
+<option value="9">9 Shorts</option>
+<option value="10">10 Shorts</option>
+
+</select>
+
+
+<label>Minimum Gap Between Shorts</label>
+
+<select id="gap" onchange="validateAll()">
+
+<option value="30">30 Minutes</option>
+<option value="60">1 Hour</option>
+<option value="90">1.5 Hours</option>
+<option value="120" selected>2 Hours</option>
+<option value="180">3 Hours</option>
+<option value="240">4 Hours</option>
+<option value="360">6 Hours</option>
+
+</select>
+
+<div class="info">
+Choose your own upload time for every Short.
+The system will check your selected minimum gap.
+</div>
+
+<div id="schedule"></div>
+
+</div>
+
+
+<!-- STEP 4 -->
+
+<div class="card">
+
+<div class="step">STEP 4</div>
+<h2>♾️ Automation</h2>
+
+<div class="automatic">
+
+<div>
+
+<strong>All-Time Automatic</strong>
+
+<div class="info">
+Repeat this schedule every day automatically.
+</div>
+
+</div>
+
+<div id="autoSwitch"
+class="switch"
+onclick="toggleAuto()">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- STEP 5 -->
+
+<div class="card">
+
+<div class="step">STEP 5</div>
+
+<button class="primary"
+onclick="startAutomation()">
+
+🚀 READY TO START
+
+</button>
+
+</div>
+
+
+<!-- SYSTEM STATUS -->
+
+<div class="card status" id="status">
+
+<div class="step">SYSTEM STATUS</div>
+<h2>📊 Automation Status</h2>
+
+<div class="status-item">
+🔗 Platform Connection
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+🔍 Trend Research
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+✍️ AI Script Generation
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+🎙️ Voice Generation
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+🎬 Video Generation
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+🔎 SEO Optimization
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+<div class="status-item">
+📤 Social Upload
+<div class="status-small">
+Waiting...
+</div>
+</div>
+
+</div>
+
+
+<div class="footer">
+AiShortsAuto • AI Social Video Automation
+</div>
+
+</div>
+
+
+<script>
+
+let automatic=false;
+
+
+/* PLATFORM SELECTION */
+
+function togglePlatform(element){
+
+    element.classList.toggle("active");
+
+}
+
+
+/* CONNECT LINK */
+
+function connectPlatform(platform){
+
+    let input;
+    let status;
+
+    if(platform==="youtube"){
+
+        input=document.getElementById("youtubeLink");
+        status=document.getElementById("youtubeConnected");
+
+    }
+
+    if(platform==="facebook"){
+
+        input=document.getElementById("facebookLink");
+        status=document.getElementById("facebookConnected");
+
+    }
+
+    if(platform==="instagram"){
+
+        input=document.getElementById("instagramLink");
+        status=document.getElementById("instagramConnected");
+
+    }
+
+    if(!input.value.trim()){
+
+        alert(
+            "Please paste your platform link first."
+        );
+
+        return;
+
+    }
+
+    status.style.display="block";
+
+}
+
+
+/* AUTOMATIC */
+
+function toggleAuto(){
+
+    automatic=!automatic;
+
+    document
+    .getElementById("autoSwitch")
+    .classList.toggle("on",automatic);
+
+}
+
+
+/* TIME */
+
+function timeToMinutes(value){
+
+    if(!value) return null;
+
+    const parts=value.split(":");
+
+    return parseInt(parts[0])*60+
+           parseInt(parts[1]);
+
+}
+
+
+/* CREATE SCHEDULE */
+
+function createSchedule(){
+
+    const count=parseInt(
+        document.getElementById("count").value
+    );
+
+    const box=document.getElementById("schedule");
+
+    box.innerHTML="";
+
+    for(let i=1;i<=count;i++){
+
+        box.innerHTML+=`
+
+        <div class="video-row">
+
+            <div class="video-title">
+                🎬 Short ${i}
+            </div>
+
+            <label>Upload Time</label>
+
+            <input
+            type="time"
+            class="timeInput"
+            onchange="validateAll()">
+
+            <div class="schedule-status">
+            ⏳ Time not selected
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+
+/* VALIDATION */
+
+function validateAll(){
+
+    const gap=parseInt(
+        document.getElementById("gap").value
+    );
+
+    const inputs=[
+        ...document.querySelectorAll(".timeInput")
+    ];
+
+    const rows=[
+        ...document.querySelectorAll(".video-row")
+    ];
+
+    let previous=null;
+
+    for(let i=0;i<inputs.length;i++){
+
+        const status=
+        rows[i].querySelector(
+            ".schedule-status"
+        );
+
+        rows[i].classList.remove(
+            "valid",
+            "invalid"
+        );
+
+        status.className=
+        "schedule-status";
+
+
+        if(!inputs[i].value){
+
+            status.innerText=
+            "⏳ Time not selected";
+
+            status.classList.add("bad");
+
+            previous=null;
+
+            continue;
+
+        }
+
+
+        const current=
+        timeToMinutes(
+            inputs[i].value
+        );
+
+
+        if(previous!==null){
+
+            const difference=
+            current-previous;
+
+
+            if(difference<gap){
+
+                rows[i].classList.add(
+                    "invalid"
+                );
+
+                status.innerText=
+                "❌ Minimum gap required: "+
+                formatGap(gap);
+
+                status.classList.add(
+                    "bad"
+                );
+
+                continue;
+
+            }
+
+        }
+
+
+        rows[i].classList.add(
+            "valid"
+        );
+
+        status.innerText=
+        "✅ Schedule time is valid";
+
+        status.classList.add(
+            "good"
+        );
+
+        previous=current;
+
+    }
+
+}
+
+
+/* FORMAT GAP */
+
+function formatGap(minutes){
+
+    if(minutes<60)
+        return minutes+" minutes";
+
+    const hours=
+    Math.floor(minutes/60);
+
+    const mins=
+    minutes%60;
+
+    if(mins===0){
+
+        return hours+
+        " hour"+
+        (hours>1?"s":"");
+
+    }
+
+    return hours+
+    "h "+
+    mins+
+    "m";
+
+}
+
+
+/* START */
+
+function startAutomation(){
+
+    const links=[
+        document.getElementById("youtubeLink").value.trim(),
+        document.getElementById("facebookLink").value.trim(),
+        document.getElementById("instagramLink").value.trim()
+    ];
+
+    if(!links.some(Boolean)){
+
+        alert(
+            "Please connect at least one social platform."
+        );
+
+        return;
+
+    }
+
+
+    const inputs=[
+        ...document.querySelectorAll(".timeInput")
+    ];
+
+
+    for(let input of inputs){
+
+        if(!input.value){
+
+            alert(
+                "Please set the upload time for every Short."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    validateAll();
+
+
+    const invalid=
+    document.querySelectorAll(
+        ".video-row.invalid"
+    );
+
+
+    if(invalid.length>0){
+
+        alert(
+            "⚠️ Please fix the schedule gap first."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "status"
+    ).style.display="block";
+
+
+    alert(
+        "🚀 AiShortsAuto is ready to start!"
+    );
+
+}
+
+createSchedule();
+
+</script>
+
+</body>
+    </html>
