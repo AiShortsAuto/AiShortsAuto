@@ -300,7 +300,56 @@ input:focus{
 </head>
 
 <body>
+<!-- AUTH SCREEN -->
+<div id="auth-screen" style="
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#0f172a;
+  color:white;
+  font-family:Arial,sans-serif;
+">
+  <div style="
+    width:100%;
+    max-width:420px;
+    background:#1e293b;
+    padding:30px;
+    border-radius:18px;
+    box-sizing:border-box;
+  ">
+    <h1 style="text-align:center;">AiShortsAuto</h1>
+    <p style="text-align:center;color:#94a3b8;">
+      Login or create your account
+    </p>
 
+    <input id="auth-email"
+      type="email"
+      placeholder="Email"
+      style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box;border-radius:8px;border:0;">
+
+    <input id="auth-password"
+      type="password"
+      placeholder="Password"
+      style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box;border-radius:8px;border:0;">
+
+    <button id="loginBtn"
+      style="width:100%;padding:13px;margin-top:10px;border:0;border-radius:8px;cursor:pointer;">
+      Login
+    </button>
+
+    <button id="signupBtn"
+      style="width:100%;padding:13px;margin-top:10px;border:0;border-radius:8px;cursor:pointer;">
+      Create Account
+    </button>
+
+    <p id="auth-message"
+      style="text-align:center;margin-top:15px;color:#94a3b8;"></p>
+  </div>
+</div>
+
+<div id="app-screen" style="display:none;">
 <header>
     <div class="logo">Ai<span>Shorts</span>Auto 🤖</div>
     <div class="subtitle">
