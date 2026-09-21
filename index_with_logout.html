@@ -990,6 +990,116 @@ function startAutomation(){
 createSchedule();
 
 </script>
+</div>
 
+<script>
+const SUPABASE_URL = "https://xrzbwjjtkrrxdsvmdfs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_uZTQWulR5pyZ8_6GGKcfGQ_9lX-tlz_";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const authScreen = document.getElementById("auth-screen");
+const appScreen = document.getElementById("app-screen");
+const authMessage = document.getElementById("auth-message");
+
+function showApp() {
+  authScreen.style.display = "none";
+  appScreen.style.display = "block";
+}
+
+function showAuth() {
+  authScreen.style.display = "flex";
+  appScreen.style.display = "none";
+}
+
+function message(text) {
+  authMessage.textContent = text;
+}
+
+async function checkLogin() {
+  const { data } = await db.auth.getSession();
+
+  if (data.session) {
+    showApp();
+  } else {
+    showAuth();
+  }
+}
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+
+  if (!email || !password) {
+    message("Please enter email and password.");
+    return;
+  }
+
+  message("Logging in...");
+
+  const { error } = await db.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    message(error.message);
+    return;
+  }
+
+  message("");
+  showApp();
+});
+
+document.getElementById("signupBtn").addEventListener("click", async () => {
+  const email = document.getElementById("auth-email").value.trim();
+  const password = document.getElementById("auth-password").value;
+
+  if (!email || !password) {
+    message("Please enter email and password.");
+    return;
+  }
+
+  if (password.length < 6) {
+    message("Password must be at least 6 characters.");
+    return;
+  }
+
+  message("Creating account...");
+
+  const { error } = await db.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      emailRedirectTo: window.location.origin + window.location.pathname
+    }
+  });
+
+  if (error) {
+    message(error.message);
+    return;
+  }
+
+  message("Account created! Please check your email and confirm your account.");
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await db.auth.signOut();
+  showAuth();
+});
+
+db.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    showApp();
+  } else {
+    showAuth();
+  }
+});
+
+checkLogin();
+</script>
 </body>
     </html>
